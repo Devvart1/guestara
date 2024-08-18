@@ -11,5 +11,6 @@ app.use(
 app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.static("public")); // use static assets from public dir
-
+import categoryRouter from "./routes/category.route.js";
+app.use("/api/v1/category", categoryRouter);
 export { app };
