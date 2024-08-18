@@ -51,3 +51,5 @@ const subCategorySchema = new Schema(
   },
   { timestamps: true }
 );
+
+export default mongoose.model("SubCategory", subCategorySchema);

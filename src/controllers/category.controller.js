@@ -1,4 +1,4 @@
-import { ApiResponse } from "../utils/ApiRespone.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
 import mongoose from "mongoose";
 import Category from "../models/category.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
@@ -65,10 +65,33 @@ const getAllCategories = asyncHandler(async (req, res) => {
 
 const getCategoryByName = asyncHandler(async (req, res) => {
   const { name } = req.params;
+  console.log("name", name);
+  if (!name) {
+    throw new ApiError(400, "Category name is required");
+  }
   const category = await Category.findOne({ name: name.toLowerCase() });
+  console.log(category);
   if (!category) {
     throw new ApiError(404, "Category not found");
   }
+  return res
+    .status(200)
+    .json(new ApiResponse(200, category, "Category found successfully"));
 });
 
-export { createCategory, getAllCategories };
+const getCategoryById = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  if (!id) {
+    throw new ApiError(400, "Category id not found in request");
+  }
+  const category = await Category.findById(id);
+
+  if (!category) {
+    throw new ApiError(400, "No category found");
+  }
+  return res
+    .status(200)
+    .json(new ApiResponse(200, category, "Category found successfully"));
+});
+
+export { createCategory, getAllCategories, getCategoryByName, getCategoryById };
